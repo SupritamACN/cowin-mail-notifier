@@ -1,0 +1,36 @@
+<div style="margin: 0 auto; width: 40%; background: rgba(248, 248, 248, 0.582); margin-top: 10%; font-size: x-large;">
+  <form class="example-form" [formGroup]="subscribersForm" style="padding: 20px;">
+    <mat-form-field class="example-full-width" style="width: 100%;">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+      <mat-error *ngIf="!subscribersForm.hasError('required')">
+        Email is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="!subscribersForm.hasError('email')">
+        Email is <strong>invalid</strong>
+      </mat-error>
+    </mat-form-field>
+    <br>
+    <br>
+    <mat-form-field style="width: 50%;">
+      <mat-label>Select district</mat-label>
+      <mat-select formControlName="district">
+        <mat-option *ngFor="let district of districtList" [value]="district.id">
+          {{district.districtName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    &nbsp; &nbsp;
+    <mat-form-field style="width: 40%;">
+      <mat-label>Select state</mat-label>
+      <mat-select [(value)]='selectedState' formControlName="state" [disabled]="5>2">
+        <mat-option *ngFor="let state of stateList" [value]="state.id">
+          {{state.stateName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+    <br>
+    <button mat-stroked-button [disabled]="!subscribersForm.valid"  style="margin-left: 20%; width: 60%;">Subscribe Mail Notification</button>
+  </form>
+</div>
