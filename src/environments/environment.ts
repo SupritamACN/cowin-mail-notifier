@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  R_BASE_URL: 'http://localhost:8080',
+  R_SUBSCRIBE_USER: '/v1/public/subscribe',
+  R_UNSUBSCRIBE_USER: '/v1/public/unsubscribe/',
+
+  COWIN_BASE_URL: 'https://cdn-api.co-vin.in/api',
+  COWIN_DISTRICT: '/v2/admin/location/districts/'
 };
 
 /*

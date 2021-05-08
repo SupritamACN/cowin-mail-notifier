@@ -17,8 +17,8 @@
     <mat-form-field class="district" style="width: 100%;">
       <mat-label>Select district</mat-label>
       <mat-select formControlName="district">
-        <mat-option *ngFor="let district of districtList" [value]="district.id">
-          {{district.districtName}}
+        <mat-option *ngFor="let district of districtList" [value]="district.district_id">
+          {{district.district_name}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -33,7 +33,7 @@
     </mat-form-field>
     <br>
     <br>
-    <p *ngIf="subscriptionMessage">{{email_message}} mail notification subscribed for {{district_message}}</p>
+    <p *ngIf="subscriptionMessage">{{email_message}} {{district_message}}</p>
     <button mat-stroked-button class="tooltip" [disabled]="!subscribersForm.valid" style="width: fit-content;"  (click)="doSubscribe()">
       <span class="tooltiptext">Fill the form correctly!</span>
       Subscribe Notification
@@ -52,9 +52,10 @@
       </mat-error>
     </mat-form-field>
     <br>
-    <p style="font-size: 20px; color: red;" *ngIf="subscriptionMessage">{{email_message}}, unsubscribed!</p>
-    <button mat-raised-button class="danger" (click)="doUnSubscribe($event)" [disabled]="isVisible"  [disabled]= "!unSubscribersForm.valid"
+    <p style="font-size: 20px; color: red;" *ngIf="subscriptionMessage">{{email_message}}</p>
+    <button mat-raised-button class="danger tooltip" (click)="doUnSubscribe($event)" [disabled]="isVisible"  [disabled]= "!unSubscribersForm.valid"
     style="text-align: center; margin-bottom: 5px; margin-right: 10px; height: 40px; line-height: 40px; width: fit-content;">
+    <span class="tooltiptext">Enter email first</span>
     <span class="material-icons">
       remove_circle
     </span>&nbsp;
@@ -63,14 +64,14 @@
   </form>
   <div id="buttom-options"
     style="text-align: center; width: 100%;padding: 10px 0px 10px 0px;border-radius: 10px; background-color: rgb(235, 235, 235);">
-    <button mat-raised-button class="danger" (click)="showUnsubscribeForm()"  *ngIf="isVisible"
+    <button mat-raised-button class="danger" (click)="toggleForm()"  *ngIf="isVisible"
       style="text-align: center; margin-bottom: 5px; margin-right: 10px; height: 40px; line-height: 40px; width: fit-content;">
       <span class="material-icons">
         remove_circle
       </span>&nbsp;
       <span style="margin-top: auto; font-size: 1.08em;">Unsubscribe Here</span>
     </button>
-    <button mat-raised-button class="success-btn" (click)="showUnsubscribeForm()" *ngIf="!isVisible"
+    <button mat-raised-button class="success-btn" (click)="toggleForm()" *ngIf="!isVisible"
     style="text-align: center; margin-bottom: 5px; margin-right: 10px; height: 40px; line-height: 40px; width: fit-content;">
     <span class="material-icons">
       notification_add
