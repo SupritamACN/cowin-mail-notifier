@@ -7,8 +7,14 @@ import { FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./subpage.component.css']
 })
 export class SubpageComponent implements OnInit, AfterViewInit {
-    
-  selectedState:Number = 3;
+  
+  
+  subscribersForm:any;
+  unSubscribersForm:any;
+  isVisible:boolean = true;
+  email_message:string = '';
+  district_message:string = '';
+  subscriptionMessage:boolean = false;
   districtList: {
     id: Number;
     districtName: string;
@@ -32,19 +38,39 @@ export class SubpageComponent implements OnInit, AfterViewInit {
   constructor(private _fb:FormBuilder){
   }
   ngAfterViewInit(): void {
-    this.selectedState = this.stateList[0].id;
     
   }
-  
-  subscribersForm:any;
 
   ngOnInit(): void {
     this.subscribersForm = this._fb.group({
       email: [null, [Validators.required, Validators.email]],
       district: [null, Validators.required],
-      state: [null]
+      state: [{value: this.stateList[2].id, disabled: true}]
+    });
+    this.unSubscribersForm = this._fb.group({
+      u_email: [null, [Validators.required, Validators.email]]
     })
    }
 
+   showUnsubscribeForm():void{
+     this.isVisible = !this.isVisible;
+   }
+   doSubscribe():string{
+    console.log(this.subscribersForm.value)
+    this.email_message = this.subscribersForm.value.email;
+    this.district_message = this.subscribersForm.value.district;
+    this.subscriptionMessage = true;
+    this.subscribersForm.reset();
+    return 'success';
+   }
 
+   doUnSubscribe(e:any):string{
+     console.log(this.unSubscribersForm.value)
+     let val:any = this.unSubscribersForm.value;
+     //TODO: return value after successful api call
+     this.email_message = ''+val.u_email;
+     this.subscriptionMessage = true;
+     this.unSubscribersForm.reset();
+     return val;
+   }
 }
