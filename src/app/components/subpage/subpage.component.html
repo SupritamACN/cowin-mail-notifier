@@ -1,5 +1,6 @@
 <div id="container"
-  style="margin: 0 auto; background: rgba(248, 248, 248, 0.582); margin-top: 10%; font-size: x-large;">
+  style="margin: 0 auto; background: rgba(248, 248, 248, 0.582); margin-top: 2%; font-size: x-large;">
+  <div class="title" style="width: 100%; background-color: aliceblue; height: fit-content; text-align: center; font-weight: bolder; opacity: .6; border-radius: 10px; box-shadow: 0px 2px 2px rgb(155, 155, 155); padding-top: 10px; padding-bottom: 10px;">COWIN MAIL NOTIFIER</div>
   <form class="example-form" [formGroup]="subscribersForm" style="padding: 20px; text-align: center;"
     *ngIf="isVisible">
     <mat-form-field class="email" style="width: 100%;">
@@ -25,7 +26,7 @@
     &nbsp; &nbsp;
     <mat-form-field class="state" style="width: 100%;">
       <mat-label>Select state</mat-label>
-      <mat-select formControlName="state">
+      <mat-select formControlName="state"  [(value)]="selectedSate">
         <mat-option *ngFor="let state of stateList" [value]="state.id">
           {{state.stateName}}
         </mat-option>
@@ -33,9 +34,9 @@
     </mat-form-field>
     <br>
     <br>
-    <p *ngIf="subscriptionMessage">{{email_message}} {{district_message}}</p>
+    <p *ngIf="subscriptionMessage" style="font-size: small;">{{email_message}} {{district_message}}</p>
     <button mat-stroked-button class="tooltip" [disabled]="!subscribersForm.valid" style="width: fit-content;"  (click)="doSubscribe()">
-      <span class="tooltiptext">Fill the form correctly!</span>
+      <span class="tooltiptext" *ngIf="!subscribersForm.valid">Fill the form correctly!</span>
       Subscribe Notification
     </button>
   </form>
@@ -55,7 +56,7 @@
     <p style="font-size: 20px; color: red;" *ngIf="subscriptionMessage">{{email_message}}</p>
     <button mat-raised-button class="danger tooltip" (click)="doUnSubscribe($event)" [disabled]="isVisible"  [disabled]= "!unSubscribersForm.valid"
     style="text-align: center; margin-bottom: 5px; margin-right: 10px; height: 40px; line-height: 40px; width: fit-content;">
-    <span class="tooltiptext">Enter email first</span>
+    <span class="tooltiptext" *ngIf="!unSubscribersForm.valid">Enter email first</span>
     <span class="material-icons">
       remove_circle
     </span>&nbsp;
