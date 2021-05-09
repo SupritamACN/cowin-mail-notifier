@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  R_BASE_URL: 'http://localhost:8080',
+  R_BASE_URL: 'http://34.93.38.138:80',
   R_SUBSCRIBE_USER: '/v1/public/subscribe',
   R_UNSUBSCRIBE_USER: '/v1/public/unsubscribe/',
 
