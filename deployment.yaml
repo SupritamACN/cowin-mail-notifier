@@ -6,7 +6,7 @@ metadata:
   name: cowin-frontend
   namespace: default
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: cowin-frontend
@@ -21,6 +21,6 @@ spec:
         app: cowin-frontend
     spec:
       containers:
-      - image: gcr.io/cowin-slot-313213/cowin-frontend:v1
-        name: cowin-fronend
-
+      - image: gcr.io/cowin-slot-313213/github.com/debashish345/cowin-mail-notifier
+        imagePullPolicy: IfNotPresent
+        name: cowin-frontend
