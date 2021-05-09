@@ -20,6 +20,7 @@ export class SubpageComponent implements OnInit, AfterViewInit {
   district_message: string = '';
   subscriptionMessage: boolean = false;
   districtList: DistrictEntity[] = [];
+  selectedSate:Number = 36;
   stateList: {
     id: Number;
     stateName: string;
@@ -72,12 +73,18 @@ export class SubpageComponent implements OnInit, AfterViewInit {
         districtName
       )
     );
+    this.subscribersForm.state = this.stateList[0].id;
     this._userService.doSubsribeUser(userEntity).subscribe(
       res => {
-        this.email_message = this.subscribersForm.value.email + ', mail notification subscribed for ';
+        this.email_message = 'Please verify ' + this.subscribersForm.value.email + ', to comeplete subsription for';
         this.district_message = districtName;
         this.subscriptionMessage = true;
-        this.subscribersForm.reset();
+        this.subscribersForm.patchValue(
+          {
+            'email': null,
+            'district': null
+          }
+        );
         return 'success';
       },
       err => {

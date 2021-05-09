@@ -7,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InfoComponent implements OnInit {
 
-  constructor() { }
+  today: number = Date.now();
+
+  constructor() {
+    setInterval(() => { this.today = Date.now() }, 1);
+  }
 
   ngOnInit(): void {
   }
