@@ -13,7 +13,6 @@ export class CowinapiService {
   constructor(private _http: HttpClient) { }
 
   getAllDistrict(state_id:string):Observable<DistrictEntity[]>{
-    console.log(state_id + 'in service')
     return this._http.get<DistrictEntity[]>(
       environment.COWIN_BASE_URL + environment.COWIN_DISTRICT + state_id
     );

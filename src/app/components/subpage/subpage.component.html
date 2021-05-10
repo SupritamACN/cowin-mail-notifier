@@ -1,8 +1,9 @@
+<mat-progress-bar mode="indeterminate" *ngIf="appload"></mat-progress-bar>
 <div id="container" style="margin: 0 auto; background: rgba(248, 248, 248, 0.582); margin-top: 2%; font-size: x-large;">
   <div class="title"
     style="width: 100%; background-color: aliceblue; height: fit-content; text-align: center; font-weight: bolder; opacity: .6; border-radius: 10px; box-shadow: 0px 2px 2px rgb(155, 155, 155); padding-top: 10px; padding-bottom: 10px;">
     COWIN MAIL NOTIFIER</div>
-  <form class="example-form" [formGroup]="subscribersForm" style="padding: 20px; text-align: center;" *ngIf="isVisible">
+  <form class="example-form" [formGroup]="subscribersForm" style="padding: 20px; text-align: center;" *ngIf="isVisible" #formDirective="ngForm">
     <mat-form-field class="email" style="width: 100%;">
       <mat-label>Email</mat-label>
       <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
@@ -46,13 +47,14 @@
     <br>
     <p *ngIf="subscriptionMessage" style="font-size: small;">{{email_message}} {{district_message}}</p>
     <button mat-stroked-button class="tooltip" [disabled]="!subscribersForm.valid" style="width: fit-content;"
-      (click)="doSubscribe()">
+      (click)="doSubscribe()" *ngIf="!loading">
       <span class="tooltiptext" *ngIf="!subscribersForm.valid">Fill the form correctly!</span>
-      SUBSCRIBE
+      <strong>SUBSCRIBE</strong>
     </button>
+    <mat-spinner *ngIf="loading" style="transform: scale(.2); padding: 0; margin: 0 auto;"></mat-spinner>
   </form>
   <form class="example-form" [formGroup]="unSubscribersForm" style="padding: 20px; text-align: center;"
-    *ngIf="!isVisible">
+    *ngIf="!isVisible" #formDirective="ngForm">
     <mat-form-field class="email" style="width: 100%;">
       <mat-label>Email</mat-label>
       <input type="email" matInput formControlName="u_email" placeholder="Ex. pat@example.com">
@@ -67,8 +69,8 @@
     <br>
     <p style="font-size: 20px; color: red;" *ngIf="subscriptionMessage">{{email_message}}</p>
     <br>
-    <button mat-raised-button class="danger tooltip" (click)="doUnSubscribe($event)" [disabled]="isVisible"
-      [disabled]="!unSubscribersForm.valid"
+    <button mat-raised-button class="danger tooltip" (click)="doUnSubscribe()" [disabled]="isVisible"
+      [disabled]="!unSubscribersForm.valid"  *ngIf="!loading" 
       style="text-align: center; margin-bottom: 5px; margin-right: 10px; height: 40px; line-height: 40px; width: fit-content;">
       <span class="tooltiptext" *ngIf="!unSubscribersForm.valid">Enter email first.</span>
       <span class="material-icons">
@@ -76,6 +78,7 @@
       </span>&nbsp;
       <span style="margin-top: auto; font-size: 1.08em;">UNSUBSCRIBE</span>
     </button>
+    <mat-spinner *ngIf="loading" style="transform: scale(.2); padding: 0; margin: 0 auto; z-index: 100;"></mat-spinner>
   </form>
   <div id="buttom-options"
     style="text-align: center; width: 100%;padding: 10px 0px 10px 0px;border-radius: 10px; background-color: rgb(235, 235, 235);">
