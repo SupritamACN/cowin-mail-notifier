@@ -76,7 +76,7 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     this.subscribersForm.state = this.stateList[0].id;
     this._userService.doSubsribeUser(userEntity).subscribe(
       res => {
-        this.email_message = 'Please verify ' + this.subscribersForm.value.email + ', to comeplete subsription for';
+        this.email_message = 'Please verify ' + this.subscribersForm.value.email + ', to complete subscription for';
         this.district_message = districtName;
         this.subscriptionMessage = true;
         this.subscribersForm.patchValue(
