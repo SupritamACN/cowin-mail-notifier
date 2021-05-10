@@ -4,6 +4,7 @@ import { UserService } from 'src/app/service/user.service';
 import { PlaceEntity, UserEntity } from 'src/app/model/UserEntity';
 import { CowinapiService } from 'src/app/service/cowinapi.service';
 import { DistrictEntity } from 'src/app/model/DistrictEntity';
+import { StateEntity } from 'src/app/model/StateEntity';
 
 @Component({
   selector: 'app-subpage',
@@ -21,12 +22,16 @@ export class SubpageComponent implements OnInit, AfterViewInit {
   subscriptionMessage: boolean = false;
   districtList: DistrictEntity[] = [];
   selectedSate:Number = 36;
-  stateList: {
-    id: Number;
-    stateName: string;
+  stateList: StateEntity[] = [];
+  selectedAge:Number = 0;
+  ageList: {
+    id:Number;
+    value:string
   }[] = [
-      { id: 36, stateName: 'West Bengal' },
-    ];
+    {id:0, value:'Both'},
+    {id:18, value:'18'},
+    {id:45, value:'45'}
+  ]
 
   constructor(private _fb: FormBuilder,
     private _userService: UserService,
@@ -36,7 +41,15 @@ export class SubpageComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this._cowinapiService.getAllDistrict().subscribe(
+    this._cowinapiService.getAllStates().subscribe(
+      (res:any) => {
+        console.log(res)
+        res.states.forEach((s:any) => {
+          this.stateList.push(new StateEntity(s.state_id, s.state_name));
+        });
+      }
+    )
+    this._cowinapiService.getAllDistrict(''+this.selectedSate).subscribe(
       (res:any) => {
         res.districts.forEach((d:any) => {
           this.districtList.push(new DistrictEntity(d.district_id, d.district_name));
@@ -47,11 +60,23 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     this.subscribersForm = this._fb.group({
       email: [null, [Validators.required, Validators.email]],
       district: [null, Validators.required],
-      state: [{ value: this.stateList[0].id, disabled: true }]
+      state: [null, Validators.required],
+      age: [null, [Validators.required]]
     });
     this.unSubscribersForm = this._fb.group({
       u_email: [null, [Validators.required, Validators.email]]
     })
+  }
+
+  onSelect(e:any){
+    this.districtList = [];
+    this._cowinapiService.getAllDistrict(''+e.value).subscribe(
+      (res:any) => {
+        res.districts.forEach((d:any) => {
+          this.districtList.push(new DistrictEntity(d.district_id, d.district_name));
+        })
+      }
+    )
   }
 
   toggleForm(): void {
@@ -61,6 +86,7 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     this.isVisible = !this.isVisible;
   }
   doSubscribe(): void {
+    console.log(this.selectedAge)
     let districtName = '';
     this.districtList.forEach(d => {
       if(d.district_id == this.subscribersForm.value.district)
@@ -71,9 +97,9 @@ export class SubpageComponent implements OnInit, AfterViewInit {
       new PlaceEntity(
         this.subscribersForm.value.district,
         districtName
-      )
+      ),
+      this.selectedAge
     );
-    this.subscribersForm.state = this.stateList[0].id;
     this._userService.doSubsribeUser(userEntity).subscribe(
       res => {
         this.email_message = 'Please verify ' + this.subscribersForm.value.email + ', to complete subscription for';
