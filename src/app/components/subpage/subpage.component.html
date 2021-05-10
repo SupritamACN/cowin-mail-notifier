@@ -37,7 +37,7 @@
     <p *ngIf="subscriptionMessage" style="font-size: small;">{{email_message}} {{district_message}}</p>
     <button mat-stroked-button class="tooltip" [disabled]="!subscribersForm.valid" style="width: fit-content;"  (click)="doSubscribe()">
       <span class="tooltiptext" *ngIf="!subscribersForm.valid">Fill the form correctly!</span>
-      Subscribe Notification
+      SUBSCRIBE
     </button>
   </form>
   <form class="example-form" [formGroup]="unSubscribersForm" style="padding: 20px; text-align: center;"
@@ -53,14 +53,16 @@
       </mat-error>
     </mat-form-field>
     <br>
+    <br>
     <p style="font-size: 20px; color: red;" *ngIf="subscriptionMessage">{{email_message}}</p>
+    <br>
     <button mat-raised-button class="danger tooltip" (click)="doUnSubscribe($event)" [disabled]="isVisible"  [disabled]= "!unSubscribersForm.valid"
     style="text-align: center; margin-bottom: 5px; margin-right: 10px; height: 40px; line-height: 40px; width: fit-content;">
-    <span class="tooltiptext" *ngIf="!unSubscribersForm.valid">Enter email first</span>
+    <span class="tooltiptext" *ngIf="!unSubscribersForm.valid">Enter email first.</span>
     <span class="material-icons">
       remove_circle
     </span>&nbsp;
-    <span style="margin-top: auto; font-size: 1.08em;">Unsubscribe</span>
+    <span style="margin-top: auto; font-size: 1.08em;">UNSUBSCRIBE</span>
   </button>
   </form>
   <div id="buttom-options"
