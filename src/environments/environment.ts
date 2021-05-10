@@ -9,7 +9,8 @@ export const environment = {
   R_UNSUBSCRIBE_USER: '/v1/public/unsubscribe/',
 
   COWIN_BASE_URL: 'https://cdn-api.co-vin.in/api',
-  COWIN_DISTRICT: '/v2/admin/location/districts/'
+  COWIN_DISTRICT: '/v2/admin/location/districts/',
+  COWIN_STATE: '/v2/admin/location/states'
 };
 
 /*
