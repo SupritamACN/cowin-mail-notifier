@@ -9,6 +9,8 @@ import { UserEntity } from '../model/UserEntity';
 })
 export class UserService {
 
+  loading:boolean = true;
+
   constructor(private _http: HttpClient) { }
 
   doSubsribeUser(user:UserEntity):Observable<any>{
