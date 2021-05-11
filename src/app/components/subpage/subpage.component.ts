@@ -21,7 +21,7 @@ export class SubpageComponent implements OnInit, AfterViewInit {
   isVisible: boolean = true;
   loading: boolean = false;
   email_message: string = '';
-  district_message: string = '';
+  district_message: any = '';
   subscriptionMessage: boolean = false;
   districtList: DistrictEntity[] = [];
   selectedSate: Number = 0;
@@ -91,7 +91,7 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     this.selectedDistricts = []
     let val: Number[] = e.value;
     val.forEach((d: Number) => {
-      this.selectedDistricts.push(new PlaceEntity(d+'', this.getDistrictNameById(d+'')));
+      this.selectedDistricts.push(new PlaceEntity(d, this.getDistrictNameById(d+'')));
     }
     )
   }
@@ -134,7 +134,9 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     this._userService.doSubsribeUser(userEntity).subscribe(
       res => {
         this.email_message = 'Please verify ' + this.subscribersForm.value.email + ', to complete subscription for';
-        this.district_message = districtName;
+        this.selectedDistricts.forEach(sd => {
+          this.district_message = this.district_message + sd.placeName + ', '
+        })
         this.subscriptionMessage = true;
         this.formDirective.resetForm();
         this.loading = false;
