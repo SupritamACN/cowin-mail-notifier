@@ -113,13 +113,16 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     this.isVisible = !this.isVisible;
   }
   doSubscribe(): void {
-    console.log(this.selectedDistricts)
+    this.district_message = ''
+    this.email_message = ''
     this.loading = true;
+/*  
     let districtName = '';
     this.districtList.forEach(d => {
       if (d.district_id == this.subscribersForm.value.district)
         districtName = d.district_name;
-    })
+    }) 
+*/
     let dList: PlaceEntity[] = [];
     this.selectedDistricts.forEach(d => {
       dList.push(new PlaceEntity(d.placeId, d.placeName))
@@ -130,13 +133,14 @@ export class SubpageComponent implements OnInit, AfterViewInit {
       dList,
       this.selectedAge
     );
-    console.log(userEntity);
+    
     this._userService.doSubsribeUser(userEntity).subscribe(
       res => {
         this.email_message = 'Please verify ' + this.subscribersForm.value.email + ', to complete subscription for';
         this.selectedDistricts.forEach(sd => {
           this.district_message = this.district_message + sd.placeName + ', '
         })
+        this.district_message = this.district_message.substring(0, this.district_message.length-2) + '.';
         this.subscriptionMessage = true;
         this.formDirective.resetForm();
         this.loading = false;
