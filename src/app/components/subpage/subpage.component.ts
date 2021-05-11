@@ -25,6 +25,7 @@ export class SubpageComponent implements OnInit, AfterViewInit {
   subscriptionMessage: boolean = false;
   districtList: DistrictEntity[] = [];
   selectedSate: Number = 0;
+  selectedDistricts: PlaceEntity[] = [];
   stateList: StateEntity[] = [];
   selectedAge: Number = 0;
 
@@ -75,8 +76,6 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     this.appload = false;
   }
 
-
-
   onSelect(e: any) {
     this.districtList = [];
     this._cowinapiService.getAllDistrict('' + e.value).subscribe(
@@ -88,6 +87,25 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     )
   }
 
+  onSelectDistrict(e: any) {
+    this.selectedDistricts = []
+    let val: Number[] = e.value;
+    val.forEach((d: Number) => {
+      this.selectedDistricts.push(new PlaceEntity(d+'', this.getDistrictNameById(d+'')));
+    }
+    )
+  }
+
+  getDistrictNameById(district_id: string):string {
+    let name:string = '';
+    this.districtList.forEach((d: DistrictEntity) => {
+      if (d.district_id+'' == district_id){
+        name = d.district_name
+      }
+    })
+    return name;
+  }
+
   toggleForm(): void {
     this.email_message = this.subscribersForm.value.email;
     this.district_message = this.subscribersForm.value.district;
@@ -95,20 +113,24 @@ export class SubpageComponent implements OnInit, AfterViewInit {
     this.isVisible = !this.isVisible;
   }
   doSubscribe(): void {
+    console.log(this.selectedDistricts)
     this.loading = true;
     let districtName = '';
     this.districtList.forEach(d => {
       if (d.district_id == this.subscribersForm.value.district)
         districtName = d.district_name;
     })
+    let dList: PlaceEntity[] = [];
+    this.selectedDistricts.forEach(d => {
+      dList.push(new PlaceEntity(d.placeId, d.placeName))
+    });
+
     let userEntity: UserEntity = new UserEntity(
       this.subscribersForm.value.email,
-      new PlaceEntity(
-        this.subscribersForm.value.district,
-        districtName
-      ),
+      dList,
       this.selectedAge
     );
+    console.log(userEntity);
     this._userService.doSubsribeUser(userEntity).subscribe(
       res => {
         this.email_message = 'Please verify ' + this.subscribersForm.value.email + ', to complete subscription for';
@@ -141,8 +163,11 @@ export class SubpageComponent implements OnInit, AfterViewInit {
         this.loading = false;
       },
       err => {
-        this.email_message = '' + err.error;
-        //console.log(err)
+        if (err.status == 404) {
+          this.email_message = '' + err.error;
+        } else {
+          this.email_message = '' + err.error.text;
+        }
         this.subscriptionMessage = true;
         this.formDirective.resetForm();
         this.loading = false;
